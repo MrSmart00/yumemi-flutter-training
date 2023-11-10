@@ -12,10 +12,20 @@ void main() {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
+  ThemeData buildTheme() {
+    return ThemeData(
+      colorScheme: ColorScheme.fromSwatch().copyWith(
+        primary: Colors.blue,
+        secondary: Colors.red,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
+    return MaterialApp(
+      theme: buildTheme(),
+      home: const Scaffold(
         body: Center(
           child: FractionallySizedBox(
             widthFactor: 0.5,
@@ -62,12 +72,22 @@ class TempertureView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).textTheme.labelLarge;
+    final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Text('** ℃', style: theme?.copyWith(color: Colors.blue)),
-        Text('** ℃', style: theme?.copyWith(color: Colors.red)),
+        Text(
+          '** ℃',
+          style: theme.textTheme.labelLarge?.copyWith(
+            color: theme.colorScheme.primary,
+          ),
+        ),
+        Text(
+          '** ℃',
+          style: theme.textTheme.labelLarge?.copyWith(
+            color: theme.colorScheme.secondary,
+          ),
+        ),
       ],
     );
   }
