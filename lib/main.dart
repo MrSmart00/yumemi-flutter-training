@@ -1,15 +1,12 @@
-// ignore_for_file: require_trailing_commas
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome
-    .setPreferredOrientations([DeviceOrientation.portraitUp])
-    .then((_) {
-      runApp(const MainApp());
-    });
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(const MainApp());
+  });
 }
 
 class MainApp extends StatelessWidget {
@@ -22,16 +19,20 @@ class MainApp extends StatelessWidget {
         body: Center(
           child: FractionallySizedBox(
             widthFactor: 0.5,
-            child: Column(children: [
-              Spacer(),
-              WeatherView(),
-              Expanded(child: Column(
-                children: [
-                  Padding(padding: EdgeInsets.only(top: 80)),
-                  ButtonArea()
-                ])
-              ),
-            ])
+            child: Column(
+              children: [
+                Spacer(),
+                WeatherView(),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Padding(padding: EdgeInsets.only(top: 80)),
+                      ButtonArea(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -44,16 +45,15 @@ class WeatherView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(children: [
-      AspectRatio(
-        aspectRatio: 1, 
-        child: Placeholder()
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: 16),
-        child: TempertureView()
-      )
-    ]);
+    return const Column(
+      children: [
+        AspectRatio(aspectRatio: 1, child: Placeholder()),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 16),
+          child: TempertureView(),
+        ),
+      ],
+    );
   }
 }
 
@@ -66,15 +66,9 @@ class TempertureView extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Text(
-          '** ℃', 
-          style: theme?.copyWith(color: Colors.blue)
-        ),
-        Text(
-          '** ℃', 
-          style: theme?.copyWith(color: Colors.red)
-        ),
-      ]
+        Text('** ℃', style: theme?.copyWith(color: Colors.blue)),
+        Text('** ℃', style: theme?.copyWith(color: Colors.red)),
+      ],
     );
   }
 }
