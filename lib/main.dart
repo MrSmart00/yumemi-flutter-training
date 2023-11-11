@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:yumemi_weather/yumemi_weather.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,35 +10,54 @@ void main() {
   });
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
-  ThemeData buildTheme() {
-    return ThemeData(
-      colorScheme: ColorScheme.fromSwatch().copyWith(
-        primary: Colors.blue,
-        secondary: Colors.red,
-      ),
-    );
-  }
+  @override
+  _MainAppState createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  final yumemiWeather = YumemiWeather();
+  String? imageName;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: buildTheme(),
-      home: const Scaffold(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: Colors.blue,
+          secondary: Colors.red,
+        ),
+      ),
+      home: Scaffold(
         body: Center(
           child: FractionallySizedBox(
             widthFactor: 0.5,
             child: Column(
               children: [
-                Spacer(),
-                WeatherView(),
+                const Spacer(),
+                WeatherView(imageName: imageName),
                 Expanded(
                   child: Column(
                     children: [
-                      Padding(padding: EdgeInsets.only(top: 80)),
-                      ButtonArea(),
+                      const Padding(padding: EdgeInsets.only(top: 80)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextButton(
+                            onPressed: () {},
+                            child: const Text('Close'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              final result = yumemiWeather.fetchSimpleWeather();
+                              print(result);
+                            },
+                            child: const Text('Reload'),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -51,13 +71,18 @@ class MainApp extends StatelessWidget {
 }
 
 class WeatherView extends StatelessWidget {
-  const WeatherView({super.key});
+  const WeatherView({super.key, this.imageName});
+
+  final String? imageName;
 
   @override
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        AspectRatio(aspectRatio: 1, child: Placeholder()),
+        AspectRatio(
+          aspectRatio: 1,
+          child: Placeholder(),
+        ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 16),
           child: TempertureView(),
@@ -88,21 +113,6 @@ class TempertureView extends StatelessWidget {
             color: theme.colorScheme.secondary,
           ),
         ),
-      ],
-    );
-  }
-}
-
-class ButtonArea extends StatelessWidget {
-  const ButtonArea({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        TextButton(onPressed: () {}, child: const Text('Close')),
-        TextButton(onPressed: () {}, child: const Text('Reload')),
       ],
     );
   }
