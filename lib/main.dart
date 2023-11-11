@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
 void main() {
@@ -95,13 +96,15 @@ class WeatherView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
         AspectRatio(
           aspectRatio: 1,
-          child: Placeholder(),
+          child: imageName == null
+              ? const Placeholder()
+              : SvgPicture.asset('assets/${imageName!}.svg'),
         ),
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(vertical: 16),
           child: TempertureView(),
         ),
