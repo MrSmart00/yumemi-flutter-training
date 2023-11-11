@@ -79,7 +79,7 @@ class ContentViewState extends State<ContentView> {
                   ),
                   TextButton(
                     onPressed: () {
-                      setWeather(widget.network.fetchWeather());
+                      widget.network.fetchWeather().then(setWeather);
                     },
                     child: const Text('Reload'),
                   ),

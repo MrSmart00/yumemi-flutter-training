@@ -2,17 +2,17 @@ import 'package:flutter_training/weather.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
 abstract class Network {
-  Weather fetchWeather();
+  Future<Weather> fetchWeather();
 }
 
 class StubNetwork extends Network {
   final YumemiWeather yumemiWeather = YumemiWeather();
 
   @override
-  Weather fetchWeather() {
+  Future<Weather> fetchWeather() async {
     final result = yumemiWeather.fetchSimpleWeather();
     final fileName = convert(result)!;
-    return Weather(fileName: fileName);
+    return Future<Weather>.value(Weather(fileName: fileName));
   }
 
   WeatherFileName? convert(String orgName) {
