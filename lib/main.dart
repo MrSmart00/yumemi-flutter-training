@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_training/network.dart';
+import 'package:flutter_training/weather.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,11 +52,11 @@ class ContentView extends StatefulWidget {
 }
 
 class ContentViewState extends State<ContentView> {
-  String? _imageName;
+  Weather? _weather;
 
-  void setImageName(String name) {
+  void setWeather(Weather weather) {
     setState(() {
-      _imageName = name;
+      _weather = weather;
     });
   }
 
@@ -64,7 +65,7 @@ class ContentViewState extends State<ContentView> {
     return Column(
       children: [
         const Spacer(),
-        WeatherView(imageName: _imageName),
+        WeatherView(weather: _weather),
         Expanded(
           child: Column(
             children: [
@@ -78,8 +79,7 @@ class ContentViewState extends State<ContentView> {
                   ),
                   TextButton(
                     onPressed: () {
-                      final result = widget.network.fetchWeather();
-                      setImageName(result);
+                      setWeather(widget.network.fetchWeather());
                     },
                     child: const Text('Reload'),
                   ),
@@ -96,10 +96,10 @@ class ContentViewState extends State<ContentView> {
 class WeatherView extends StatelessWidget {
   const WeatherView({
     super.key,
-    required this.imageName,
+    this.weather,
   });
 
-  final String? imageName;
+  final Weather? weather;
 
   @override
   Widget build(BuildContext context) {
@@ -107,9 +107,9 @@ class WeatherView extends StatelessWidget {
       children: [
         AspectRatio(
           aspectRatio: 1,
-          child: imageName == null
+          child: weather == null
               ? const Placeholder()
-              : SvgPicture.asset('assets/${imageName!}.svg'),
+              : SvgPicture.asset(weather!.fileName.filePath),
         ),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 16),
