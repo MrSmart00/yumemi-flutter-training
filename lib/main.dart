@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:yumemi_weather/yumemi_weather.dart';
+import 'package:flutter_training/network.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(const MainApp());
+    runApp(
+      MainApp(
+        network: StubNetwork(),
+      ),
+    );
   });
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  const MainApp({super.key, required this.network});
+
+  final Network network;
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +29,11 @@ class MainApp extends StatelessWidget {
           secondary: Colors.red,
         ),
       ),
-      home: const Scaffold(
+      home: Scaffold(
         body: Center(
           child: FractionallySizedBox(
             widthFactor: 0.5,
-            child: ContentView(),
+            child: ContentView(network: network),
           ),
         ),
       ),
@@ -36,14 +42,15 @@ class MainApp extends StatelessWidget {
 }
 
 class ContentView extends StatefulWidget {
-  const ContentView({super.key});
+  const ContentView({super.key, required this.network});
+
+  final Network network;
 
   @override
   ContentViewState createState() => ContentViewState();
 }
 
 class ContentViewState extends State<ContentView> {
-  final yumemiWeather = YumemiWeather();
   String? _imageName;
 
   void setImageName(String name) {
@@ -71,7 +78,7 @@ class ContentViewState extends State<ContentView> {
                   ),
                   TextButton(
                     onPressed: () {
-                      final result = yumemiWeather.fetchSimpleWeather();
+                      final result = widget.network.fetchWeather();
                       setImageName(result);
                     },
                     child: const Text('Reload'),
