@@ -10,16 +10,8 @@ void main() {
   });
 }
 
-class MainApp extends StatefulWidget {
+class MainApp extends StatelessWidget {
   const MainApp({super.key});
-
-  @override
-  _MainAppState createState() => _MainAppState();
-}
-
-class _MainAppState extends State<MainApp> {
-  final yumemiWeather = YumemiWeather();
-  String? imageName;
 
   @override
   Widget build(BuildContext context) {
@@ -30,39 +22,11 @@ class _MainAppState extends State<MainApp> {
           secondary: Colors.red,
         ),
       ),
-      home: Scaffold(
+      home: const Scaffold(
         body: Center(
           child: FractionallySizedBox(
             widthFactor: 0.5,
-            child: Column(
-              children: [
-                const Spacer(),
-                WeatherView(imageName: imageName),
-                Expanded(
-                  child: Column(
-                    children: [
-                      const Padding(padding: EdgeInsets.only(top: 80)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          TextButton(
-                            onPressed: () {},
-                            child: const Text('Close'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              final result = yumemiWeather.fetchSimpleWeather();
-                              print(result);
-                            },
-                            child: const Text('Reload'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            child: ContentView(),
           ),
         ),
       ),
@@ -70,8 +34,62 @@ class _MainAppState extends State<MainApp> {
   }
 }
 
+class ContentView extends StatefulWidget {
+  const ContentView({super.key});
+
+  @override
+  ContentViewState createState() => ContentViewState();
+}
+
+class ContentViewState extends State<ContentView> {
+  final yumemiWeather = YumemiWeather();
+  String? _imageName;
+
+  void setImageName(String name) {
+    setState(() {
+      _imageName = name;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Spacer(),
+        WeatherView(imageName: _imageName),
+        Expanded(
+          child: Column(
+            children: [
+              const Padding(padding: EdgeInsets.only(top: 80)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text('Close'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      final result = yumemiWeather.fetchSimpleWeather();
+                      setImageName(result);
+                    },
+                    child: const Text('Reload'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class WeatherView extends StatelessWidget {
-  const WeatherView({super.key, this.imageName});
+  const WeatherView({
+    super.key,
+    required this.imageName,
+  });
 
   final String? imageName;
 
