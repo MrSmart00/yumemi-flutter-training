@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_training/content.dart';
 import 'package:flutter_training/network.dart';
+import 'package:flutter_training/splash.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,9 +31,20 @@ class MainApp extends StatelessWidget {
           tertiary: Colors.green,
         ),
       ),
-      home: ContentScene(
-        network: network,
-      ),
+      initialRoute: '/',
+      routes: <String, WidgetBuilder>{
+        '/': (context) => SplashScene(
+              onSplashComplete: () {
+                Navigator.of(context).pushNamed('/content');
+              },
+            ),
+        '/content': (context) => ContentScene(
+              network: StubNetwork(),
+              onContentClose: () {
+                Navigator.of(context).pop();
+              },
+            ),
+      },
     );
   }
 }

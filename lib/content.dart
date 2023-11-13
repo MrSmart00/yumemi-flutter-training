@@ -4,9 +4,15 @@ import 'package:flutter_training/network.dart';
 import 'package:flutter_training/weather.dart';
 
 class ContentScene extends StatelessWidget {
-  const ContentScene({super.key, required this.network});
+  const ContentScene({
+    super.key,
+    required this.network,
+    required this.onContentClose,
+  });
 
   final Network network;
+
+  final VoidCallback onContentClose;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +20,10 @@ class ContentScene extends StatelessWidget {
       body: Center(
         child: FractionallySizedBox(
           widthFactor: 0.5,
-          child: _ContentView(network: network),
+          child: _ContentView(
+            network: network,
+            onContentClose: onContentClose,
+          ),
         ),
       ),
     );
@@ -22,9 +31,11 @@ class ContentScene extends StatelessWidget {
 }
 
 class _ContentView extends StatefulWidget {
-  const _ContentView({required this.network});
+  const _ContentView({required this.network, required this.onContentClose});
 
   final Network network;
+
+  final VoidCallback onContentClose;
 
   @override
   _ContentViewState createState() => _ContentViewState();
@@ -53,7 +64,9 @@ class _ContentViewState extends State<_ContentView> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      widget.onContentClose();
+                    },
                     child: const Text('Close'),
                   ),
                   TextButton(
@@ -74,7 +87,6 @@ class _ContentViewState extends State<_ContentView> {
 
 class _WeatherView extends StatelessWidget {
   const _WeatherView({
-    super.key,
     this.weather,
   });
 
