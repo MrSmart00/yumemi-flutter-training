@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/delay_provider.dart';
 
 class SplashScene extends StatefulWidget {
-  const SplashScene({super.key, required this.onSplashComplete});
+  const SplashScene({super.key, required this.delayProvider});
 
-  final VoidCallback onSplashComplete;
+  final DelayProvider delayProvider;
 
   @override
   State<SplashScene> createState() => _SplashSceneState();
@@ -11,15 +12,11 @@ class SplashScene extends StatefulWidget {
 
 class _SplashSceneState extends State<SplashScene> {
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    WidgetsBinding.instance.endOfFrame.then((_) {
-      Future.delayed(const Duration(milliseconds: 500), () {
-        if (mounted) {
-          widget.onSplashComplete();
-        }
-      });
-    });
+  void initState() {
+    super.initState();
+    if (mounted) {
+      widget.delayProvider.delay();
+    }
   }
 
   @override

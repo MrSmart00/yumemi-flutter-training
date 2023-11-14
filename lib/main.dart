@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_training/content.dart';
+import 'package:flutter_training/delay_provider.dart';
 import 'package:flutter_training/network.dart';
 import 'package:flutter_training/splash.dart';
 
@@ -34,9 +35,9 @@ class MainApp extends StatelessWidget {
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
         '/': (context) => SplashScene(
-              onSplashComplete: () {
-                Navigator.of(context).pushNamed('/content');
-              },
+              delayProvider: DelayProvider(
+                () => Navigator.of(context).pushNamed('/content'),
+              ),
             ),
         '/content': (context) => ContentScene(
               network: StubNetwork(),
